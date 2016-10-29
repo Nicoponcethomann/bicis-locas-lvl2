@@ -1,15 +1,4 @@
 function validateForm(){
-	/* Instrucciones
-	Todos los campos son obligatorios, excepto los dos últimos.
-	Los campos nombre y apellido sólo deben permitir caracteres de la A-Z
-	Para los campos nombre y apellido la primera letra debe ser mayúscula
-	Validar que el campo email tenga un formato válido. Ej: name@domain.com
-	El campo password debe tener al menos 6 caracteres
-	El campo password no puede ser igual a "password" ó "123456" ó "098754"
-	El valor seleccionado de bicis, debe ser una de las opciones presentadas
-	Si algún campo presenta error debe informarse al usuario por medio de un alert. */
-
-
 	// Validar name, lastname, email y password no están vacíos
 	function validateInputs(){
 		var obligatoryInputs = [document.getElementById("name"), document.getElementById("lastname"), document.getElementById("input-email"), document.getElementById("input-password")];
@@ -27,45 +16,74 @@ function validateForm(){
 	
   // Validar name y last name
   function validateNameLastName(){
+  	// Variables Name
   	var name = document.getElementById("name").value;
-	  var lastName = document.getElementById("lastname").value;
+  	var nameContainer = document.getElementsByClassName("name-container")[0];
+  	var spanName = document.createElement("span");
+	  var nameErrorCharacters = document.createTextNode("Caracteres inválidos en tu nombre");
+	  var nameErrorUpperCase = document.createTextNode("La primera letra de tu nombre debe ser en mayúscula");
+	  // Otras variables
 	  var letters = /^[a-zA-Z]+$/;
 	  
-	  // Validar si name y last name poseen caracteres de tipo alfabético 
+	  // Validar si name posee caracteres de tipo alfabético 
 		if (!name.match(letters)){
-			alert("Caracteres inválidos en tu nombre");
+			spanName.appendChild(nameErrorCharacters);
+			nameContainer.appendChild(spanName);
 			return false;
 		}
 
-		if (!lastName.match(letters)){
-			alert("Caracteres inválidos en tu apellido");
-			return false;
-		}
-		// Validar la primera letra del name y last name como mayúsculas
+		// Validar la primera letra del name como mayúsculas
 		var upperCaseLetters = /[A-Z]/;
 		var upperCaseName = name.charAt(0);
-		var upperCaseLastName = lastName.charAt(0);
 
 		if(!(upperCaseLetters.test(upperCaseName))){
-			alert("La primera letra de tu nombre debe ser en mayúscula");
-			return false;
-		}
-
-		if(!(upperCaseLetters.test(upperCaseLastName))){
-			alert("La primera letra de tu apellido deber ser en mayúscula");
+			spanName.appendChild(nameErrorUpperCase);
+			nameContainer.appendChild(spanName);
 			return false;
 		}
   }
   validateNameLastName();
 
+  function validateLastName(){
+  	// Variables LastName
+	  var lastName = document.getElementById("lastname").value;
+	  var lastNameContainer = document.getElementsByClassName("lastname-container")[0];
+  	var spanLastName = document.createElement("span");
+	  var lastNameErrorCharacters = document.createTextNode("Caracteres inválidos en tu apellido");
+	  var lastNameErrorUpperCase = document.createTextNode("La primera letra de tu apellido debe ser en mayúscula");
+	  // Otras variables
+	  var letters = /^[a-zA-Z]+$/;
+
+	  // Validar si last name posee caracteres de tipo alfabético
+	  if (!lastName.match(letters)){
+			spanLastName.appendChild(lastNameErrorCharacters);
+			lastNameContainer.appendChild(spanLastName);
+			return false;
+		}
+
+		// Validar la primera letra del last name como mayúsculas
+		var upperCaseLetters = /[A-Z]/;
+		var upperCaseLastName = lastName.charAt(0);
+
+		if(!(upperCaseLetters.test(upperCaseLastName))){
+			spanLastName.appendChild(lastNameErrorUpperCase);
+			lastNameContainer.appendChild(spanLastName);
+			return false;
+		}
+  }
+  validateLastName();
+
 	// Validar que email tenga formato válido
 	function validateEmail(){
 		var regularExpressions = /^([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)@([0-9a-zA-Z]([-_\\.]*[0-9a-zA-Z]+)*)[\\.]([a-zA-Z]{2,9})$/;
 	  var mail = document.getElementById("input-email").value;
+	  var mailContainer = document.getElementsByClassName("email-container")[0];
+	  var spanMail = document.createElement("span");
+	  var mailError = document.createTextNode("Formato inválido de email");
 
 	  if (!regularExpressions.test(mail)){
-			errorMail = "Formato inválido de email";
-			alert(errorMail);
+			spanMail.appendChild(mailError);
+			mailContainer.appendChild(spanMail);
 			return false;
 		}
 	}
@@ -75,8 +93,14 @@ function validateForm(){
 	// Revisar las expresiones y ver por qué el for de la línea 74 lo salta (o toma como true)
 	function validatePassword(){
 		var password = document.getElementById("input-password").value;
+		var passwordContainer = document.getElementsByClassName("form-group")[0];
+		var spanPassword = document.createElement("span");
+		var passwordError = document.createTextNode("Tu contraseña no es válida o es insegura. Recuerda que debe tener un mínimo de 6 dígitos");
+
+
 	  if(password.length < 6 || password == "password" || password == 123456 || password == 098754){
-	  	alert("Tu contraseña no es válida o es insegura. Recuerda que debe tener un mínimo de 6 dígitos");
+	  	spanPassword.appendChild(passwordError);
+	  	passwordContainer.appendChild(spanPassword);
 	  	return false;
 	  }
 	}
@@ -85,16 +109,17 @@ function validateForm(){
   // Validar campo "Selecciona tu bici" 
   function validateBike(){
   	var bikeType = document.getElementsByTagName("select");
-	  var errorBike;
+	  var bikeContainer = document.getElementsByClassName("form-group")[1];
+	  var spanBike = document.createElement("span");
+	  var bikeError = document.createTextNode("Por favor elige un tipo de bicicleta");
 
 	  for (var i = 0; i < bikeType.length; i++){
 	  	if(bikeType[i].value == "0"){
-	  		errorBike = "Por favor elige un tipo de bicicleta";
-	  		alert(errorBike);
+	  		spanBike.appendChild(bikeError);
+	  		bikeContainer.appendChild(spanBike);
 	  		return false;
 	  	}
 	  }
   }
   validateBike();
-
 }
